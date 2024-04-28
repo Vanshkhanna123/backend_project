@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SignUp</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="banner">
+        <h1>Elevate Your College Experience with Campus Mart</h1>
+        <h3>
+          Shop Smart, Live Better - Your One-Stop Destination for College
+          Essentials.
+        </h3>
+        <h3>Feel free!</h3>
+      </div>
+      <div class="form">
+        <img
+          src="https://i.pinimg.com/236x/4d/a8/bb/4da8bb993057c69a85b9b6f2775c9df2.jpg"
+          alt="profile"
+          width="70"
+        />
+        <small>Need an Account? <a href="log1.html">Sign In</a></small>
+        <input type="text" placeholder="Full Name" id="fullname" required />
+        <input
+          type="email"
+          placeholder="Email"
+          id="email"
+          autocomplete="off"
+          required
+        />
+        <div class="password-toggle">
+          <input
+            type="password"
+            placeholder="Password"
+            id="password"
+            required
+          />
+          <span
+            class="toggle-password"
+            onclick="togglePasswordVisibility('password')"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="22"
+              viewBox="0 -960 960 960"
+              width="22"
+            >
+              <path
+                d="M480-320q75 0 127.5-52.5T660-500q0-75-52.5-127.5T480-680q-75 0-127.5 52.5T300-500q0 75 52.5 127.5T480-320Zm0-72q-45 0-76.5-31.5T372-500q0-45 31.5-76.5T480-608q45 0 76.5 31.5T588-500q0 45-31.5 76.5T480-392Zm0 192q-146 0-266-81.5T40-500q54-137 174-218.5T480-800q146 0 266 81.5T920-500q-54 137-174 218.5T480-200Zm0-300Zm0 220q113 0 207.5-59.5T832-500q-50-101-144.5-160.5T480-720q-113 0-207.5 59.5T128-500q50 101 144.5 160.5T480-280Z"
+              />
+            </svg>
+          </span>
+        </div>
+        <div class="password-toggle">
+          <input
+            type="password"
+            placeholder="Confirm Password"
+            id="confirmPassword"
+            required
+          />
+          <span
+            class="toggle-password"
+            onclick="togglePasswordVisibility('confirmPassword')"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="22"
+              viewBox="0 -960 960 960"
+              width="22"
+            >
+              <path
+                d="M480-320q75 0 127.5-52.5T660-500q0-75-52.5-127.5T480-680q-75 0-127.5 52.5T300-500q0 75 52.5 127.5T480-320Zm0-72q-45 0-76.5-31.5T372-500q0-45 31.5-76.5T480-608q45 0 76.5 31.5T588-500q0 45-31.5 76.5T480-392Zm0 192q-146 0-266-81.5T40-500q54-137 174-218.5T480-800q146 0 266 81.5T920-500q-54 137-174 218.5T480-200Zm0-300Zm0 220q113 0 207.5-59.5T832-500q-50-101-144.5-160.5T480-720q-113 0-207.5 59.5T128-500q50 101 144.5 160.5T480-280Z"
+              />
+            </svg>
+          </span>
+        </div>
+        <button onclick="validateForm()">Register</button>
+      </div>
+    </div>
+    <script>
+        function validateForm() {
+            var fullname = document.getElementById('fullname').value;
+            var email = document.getElementById('email').value;
+            var password = document.getElementById('password').value;
+            var confirmPassword = document.getElementById('confirmPassword').value;
+            if (password !== confirmPassword) {
+                alert("Passwords do not match");
+                return false;
+            }
+            // alert("Form submitted successfully!");
+            var formData = {
+            fullname: fullname,   
+            email: email,
+            password: password,
+        };  
+
+        fetch("/signup", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        })
+          .then((response) => {
+            if (response.ok) {
+            //   console.log("Form submitted successfully");
+                window.location.href = '/homepage.html';
+                alert("Registration Successful")
+            }else if(response.status === 404){
+                // console.error("Error submitting form:", response.statusText);
+                window.location.href = '/index.html;';
+                alert("User already exist");
+            }else {
+                alert("")
+              console.error("Error submitting form:", response.statusText);
+            }
+          })
+          .catch((error) => {
+            console.error("Error submitting form:", error);
+          });
+          
+      }
+
+        function togglePasswordVisibility(inputId) {
+            var passwordInput = document.getElementById(inputId);
+            var toggleBtn = document.querySelector(`#${inputId} + .toggle-password`);
+            var passwordIcon1 = document.getElementById(`${inputId}Icon1`);
+            var passwordIcon2 = document.getElementById(`${inputId}Icon2`);
+
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                passwordIcon1.style.display = "none";
+                passwordIcon2.style.display = "block";
+            } else {
+                passwordInput.type = "password";
+                passwordIcon1.style.display = "block";
+                passwordIcon2.style.display = "none";
+            }
+        }
+    </script>
+  </body>
+</html>
